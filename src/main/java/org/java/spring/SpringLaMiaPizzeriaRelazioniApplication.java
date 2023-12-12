@@ -3,6 +3,11 @@ package org.java.spring;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.java.spring.auth.conf.AuthConf;
+import org.java.spring.auth.db.Role;
+import org.java.spring.auth.db.User;
+import org.java.spring.auth.service.RoleService;
+import org.java.spring.auth.service.UserService;
 import org.java.spring.db.pojo.Ingrediente;
 import org.java.spring.db.pojo.OffertaSpeciale;
 import org.java.spring.db.pojo.Pizza;
@@ -25,7 +30,13 @@ public class SpringLaMiaPizzeriaRelazioniApplication implements CommandLineRunne
 	
 	@Autowired
 	private IngredienteService ingredienteService;
-		
+	
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+	private UserService userService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringLaMiaPizzeriaRelazioniApplication.class, args);
 		
@@ -63,5 +74,18 @@ public class SpringLaMiaPizzeriaRelazioniApplication implements CommandLineRunne
 		offertaSpecialeService.save(new OffertaSpeciale(LocalDate.now().minusDays(5), LocalDate.of(2023, 12, 16), "Capricciosa x3", pizzas.get(5)));
 		offertaSpecialeService.save(new OffertaSpeciale(LocalDate.now().minusDays(16), LocalDate.of(2023, 12, 31), "Carbonara x4", pizzas.get(6)));
 		offertaSpecialeService.save(new OffertaSpeciale(LocalDate.now().minusDays(8), LocalDate.of(2023, 12, 2), "4 formaggi a scelta", pizzas.get(7)));
+		
+		Role roleUser = new Role("USER");
+		Role roleAdmin = new Role("ADMIN");
+		roleService.save(roleUser);
+		roleService.save(roleAdmin);
+		
+		String pws = AuthConf.passwordEncoder().encode("pws");
+		
+		User DioUser = new User("DioUser", pws, roleUser);
+		User GiuseppeAdmin = new User("GiuseppeAdmin", pws, roleAdmin);
+		
+		userService.save(DioUser);
+		userService.save(GiuseppeAdmin);
 	}
 }

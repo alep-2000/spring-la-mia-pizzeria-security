@@ -10,7 +10,7 @@
 		<div class="row mb-3">
 			<div class="col-12">
 				<h1 class="text-center mt-2 mb-5 text-white">Ingredienti:</h1>
-				<a href="/pizzas/ingredienti/create">
+				<a href="/pizzas/ingredienti/create" sec:authorize="hasAuthority('ADMIN')">
 					<button class="btn btn-success mb-3 me-2">
 						Crea Nuovi Ingredienti
 					</button>									
@@ -25,7 +25,9 @@
 			    <form 
 					style="display:inline-block"
 					th:action="@{/pizzas/ingredienti/delete/{id} (id=*{id})}"
-					method="POST">
+					method="POST"
+					sec:authorize="hasAuthority('ADMIN')"
+					>
 					<div class="d-flex justify-content-center mb-3">
 						<button type="submit" class="btn btn-danger" value="DELETE">
 							Elimina l'ingrediente
